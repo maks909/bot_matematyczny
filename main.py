@@ -16,8 +16,10 @@ def query_text(query):
     except AttributeError as ex:
         return
 
-    num1, num2 = matches.group().split()
-
+    if matches:
+        num1, num2 = matches.group().split()
+    else:
+        pass
     try:
         m_sum = int(num1) + int(num2)
         r_sum = types.InlineQueryResultArticle(
