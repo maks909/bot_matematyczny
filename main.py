@@ -11,16 +11,16 @@ digits_pattern = re.compile(r'^[0-9]+ [0-9]+$', re.MULTILINE)
 
 @bot.inline_handler(func=lambda query: len(query.query) > 0)
 def query_text(query):
-    try:
-        matches = re.match(digits_pattern, query.query)
-    except AttributeError as ex:
-        return
+    #try:
+    matches = re.match(digits_pattern, query.query)
+    #except AttributeError as ex:
+    #    return
 
     if matches:
         num1, num2 = matches.group().split()
-    else:
-        pass
-    try:
+    #else:
+    #    pass
+    #try:
         m_sum = int(num1) + int(num2)
         r_sum = types.InlineQueryResultArticle(
             id=1, title="Suma",
@@ -30,7 +30,7 @@ def query_text(query):
         )
         m_sub = int(num1) - int(num2)
         r_sub = types.InlineQueryResultArticle(
-            id="2", title="Różnica",
+            id=2, title="Różnica",
             description=f"Wynik: {m_sub}",
             input_message_content=types.InputTextMessageContent(
                 message_text=f"{num1} - {num2} = {m_sub}")
@@ -39,27 +39,35 @@ def query_text(query):
         if num2 != "0":
             m_div = int(num1) / int(num2)
             r_div = types.InlineQueryResultArticle(
-                id="3", title="iloraz",
+                id=3, title="iloraz",
                 description=f"Wynik: {round(m_div, 2)}",
                 input_message_content=types.InputTextMessageContent(
                     message_text=f"{num1} / {num2} = {round(m_div, 2)}")
             )
         else:
             r_div = types.InlineQueryResultArticle(
-                id="3", title="iloraz",
+                id=4, title="iloraz",
                 description="Nie można dzielić przez zero!",
                 input_message_content=types.InputTextMessageContent(
                     message_text="Jestem złą osobą i dzielę przez zero!")
             )
         m_mul = int(num1) * int(num2)
         r_mul = types.InlineQueryResultArticle(
-            id=4, title="Iloczyn",
+            id=5, title="Iloczyn",
             description=f"Wynik: {m_mul}",
             input_message_content=types.InputTextMessageContent(
                 message_text=f"{num1} * {num2} = {m_mul}")
         )
-        bot.answer_inline_query(query.id, [r_sum, r_sub, r_div, r_mul])
-    except Exception as e:
-        print(f"{type(e)}\n{str(e)}")
+        m_exp = int(num1) ** int(num2)
+        r_exp = types.InlineQueryResultArticle(
+            id=6, title="Potęgowanie",
+            description=f"Wynik: {m_exp}",
+            input_message_content=types.InputTextMessageContent(
+                message_text=f"{num1} ** {num2} = {m_exp}")
+        )
+
+        bot.answer_inline_query(query.id, [r_sum, r_sub, r_div, r_mul, r_exp])
+    #except Exception as e:
+    #    print(f"{type(e)}\n{str(e)}")
 
 bot.polling()
